@@ -1,0 +1,87 @@
+[VERSION]
+Signature=$Chicago$
+Class=ENCODER_INTERFACE
+ClassGUID={7DCF044B-BC08-45b4-83F5-03DD12E784F0}
+Provider=%USD%
+DriverVer=01/18/2006,1.14.0.0
+CatalogFile=usdusb1.cat
+
+[Manufacturer]
+%USD%=USDModels
+;copyright (c) 2000-2006 U.S. Digital Corp.
+
+[ClassInstall32.NT]
+AddReg=OurClassAddReg
+
+[OurClassAddReg]
+HKR,,,0,ENCODER_INTERFACE
+
+[USDModels]
+%USB1WithFirmware%=FullInstall, USB\VID_09C9&PID_0042
+
+
+[DestinationDirs]
+DefaultDestDir=10,System32\Drivers
+EmptyCopyDriver98=10,System32\Drivers
+EmptyCopyINF98=10,INF
+FullCopyDriver98=10,System32\Drivers
+FullCopyINF98=10,INF
+EmptyCopyDriverNT=10,System32\Drivers
+FullCopyDriverNT=10,System32\Drivers
+
+[SourceDisksFiles]
+usb1load.sys=1
+usdusb1.sys=1
+usdusb1.inf=1
+
+[SourceDisksNames]
+1=%USD_disk%,,,""
+
+;----------------------- install section for full (firmware loaded) Win98 computers
+[FullInstall]
+CopyFiles=FullCopyDriver98,FullCopyINF98
+AddReg=FullAddReg98
+
+[FullCopyDriver98]
+usdusb1.sys
+usb1load.sys
+
+[FullCopyINF98]
+usdusb1.inf
+
+[FullAddReg98]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,usdusb1.sys
+
+;DEBUG>> [FullInstall.hw]
+;DEBUG>> AddReg=FullAddRegHW
+
+;----------------------- install section for full (firmware loaded) Win2k/XP computers
+[FullInstall.NT]
+CopyFiles=FullCopyDriverNT
+
+[FullCopyDriverNT]
+usdusb1.sys,,,2
+usb1load.sys,,,2
+
+[FullInstall.NT.Services]
+AddService=FullUSDUSB1,2,FullDriverService
+
+[FullDriverService]
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%10%\System32\Drivers\usdusb1.sys
+
+[FullInstall.NT.hw]
+AddReg=FullAddRegHW
+
+[FullAddRegHW]
+HKR,,FriendlyName,,%FULL_FRIENDLY_NAME%
+
+;---------------------- string section
+[Strings]
+USD="U.S. Digital Corp"
+USB1WithFirmware="Update U.S. Digital USB1 to V1.14"
+USD_disk="U.S. Digital Software Distribution Disk"
+FULL_FRIENDLY_NAME="USB1 with firmware"
